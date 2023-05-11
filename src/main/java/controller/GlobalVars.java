@@ -105,8 +105,8 @@ public class GlobalVars {
 
     /**
      * 결과에 관련된 공통키 정보
-     * @author mjhwang
      *
+     * @author mjhwang
      */
     public class Result {
 
@@ -173,10 +173,9 @@ public class GlobalVars {
 
         public static final String JAVASCRIPT = "javascriptView";
     }
+
     /**
-     *
      * @author mjhwang
-     *
      */
     public class Key {
         public static final String UPLOAD_FILES_KEY = "uploadFileNames";

@@ -145,7 +145,7 @@ public class HomeController {
 //                System.out.println(String.format("[CHECK] request.getSession().getServletContext() : %s", request.getSession().getServletContext()));
 //                System.out.println(String.format("[CHECK] oService : %s", oService));
                 if (oService == null) {
-                    System.out.println("[unknownClass][url:" + request.getRequestURI() + ", class:" + service + "]");
+                    log.error("[unknownClass][url:" + request.getRequestURI() + ", class:" + sService + "]");
                     return "";
                 }
 
@@ -179,8 +179,9 @@ public class HomeController {
                     throw e;
                 }
 
-//                addResult(moModel, oResult, sMethod);
+                addResult(moModel, oResult, sMethod);
                 return VIEW_JSON;
+
 
             }
         } catch (RuntimeException e) {
