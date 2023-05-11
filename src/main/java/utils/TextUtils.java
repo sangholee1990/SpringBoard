@@ -1,6 +1,7 @@
 package utils;
 
 import controller.ActionForward;
+import org.springframework.stereotype.Component;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -9,6 +10,7 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.Properties;
 
+@Component
 public class TextUtils {
 
     private static Map<String, ActionForward> actionRequestMapping = new Hashtable<String, ActionForward>();

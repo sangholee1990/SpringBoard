@@ -3,6 +3,7 @@ package utils;
 import com.google.gson.Gson;
 import controller.Action;
 import controller.ActionForward;
+import org.springframework.stereotype.Component;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.servlet.RequestDispatcher;
@@ -17,6 +18,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
+@Component
 public class WebUtils {
 
     public static void main(String[] args) {

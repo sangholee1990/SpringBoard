@@ -72,6 +72,8 @@ public class HomeController {
                 iIndex = sUri.lastIndexOf('/');
                 sMethod = sUri.substring(iIndex + 1);
                 sService = sUri.substring(sUri.lastIndexOf('/', iIndex - 1) + 1, iIndex) + "Service";
+                log.info("[CHECK] sService : %s", sService);
+                log.info("[CHECK] sMethod : %s", sMethod);
 
 //                leMeLogger.info("call == service : {}, method : {}", sService, sMethod);
 
@@ -81,7 +83,8 @@ public class HomeController {
                     return "";
                 }
 
-                meMethod = oService.getClass().getMethod(sMethod, Params.class);
+//                meMethod = oService.getClass().getMethod(sMethod, params.class);
+                meMethod = oService.getClass().getMethod(sMethod);
                 if (meMethod == null) {
                     meMethod = WebUtils.getMethod(oService.getClass(), sMethod);
                     if (meMethod == null) {
@@ -95,18 +98,18 @@ public class HomeController {
                     if (((Map) oResult).containsKey("error") == true && ((Map) oResult).get("error").equals(true) == true)
                         TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                 } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-                    if (e.getCause().getClass().equals(ServiceException.class)) {
-                        log.error("[serviceException][url:" + request.getRequestURI() + ", class:" + sService + ", method:" + sMethod + "]");
-//                        throw new ServiceException(null, e.getCause().getMessage(), e);
-                    } else {
-                        log.error("[invokeError][url:" + request.getRequestURI() + ", class:" + sService + ", method:" + sMethod + "]");
-                    }
-                    throw e;
+//                    if (e.getCause().getClass().equals(ServiceException.class)) {
+//                        log.error("[serviceException][url:" + request.getRequestURI() + ", class:" + sService + ", method:" + sMethod + "]");
+////                        throw new ServiceException(null, e.getCause().getMessage(), e);
+//                    } else {
+//                        log.error("[invokeError][url:" + request.getRequestURI() + ", class:" + sService + ", method:" + sMethod + "]");
+//                    }
+//                    throw e;
                 } catch (Exception e) {
                     throw e;
                 }
 
-                addResult(moModel, oResult, sMethod);
+//                addResult(moModel, oResult, sMethod);
                 return VIEW_JSON;
 
 
