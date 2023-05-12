@@ -41,7 +41,7 @@ public class DynamicBeanRegistrationExample {
     }
 
     public static void main(String[] args) {
-        String className = "DynamicBean";
+        String className = "test.DynamicBean";
         String methodName = "sayHello";
         registerAndInvokeDynamicBean(className, methodName);
     }

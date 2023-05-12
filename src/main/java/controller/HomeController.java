@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 
+import acInfo.DynamicBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,6 +92,8 @@ public class HomeController {
         WebApplicationContext webApplicationContext;
         // json/smm/atclInfo/MainTest/list.do
 
+        // http://localhost:9000/json/smm/atclInfo/MainTest/list.do
+
         try {
 
             params.put("request", request);
@@ -127,10 +130,14 @@ public class HomeController {
 
                 idx = url.lastIndexOf('/');
                 method = url.substring(idx + 1);
-                service = url.substring(url.lastIndexOf('/', idx - 1) + 1, idx) + "Action";
+//                service = url.substring(url.lastIndexOf('/', idx - 1) + 1, idx) + "Action";
+                service = "action." + url.substring(url.lastIndexOf('/', idx - 1) + 1, idx);
                 System.out.println(String.format("[CHECK] idx : %s", idx));
                 System.out.println(String.format("[CHECK] method : %s", method));
                 System.out.println(String.format("[CHECK] service : %s", service));
+
+                new DynamicBean().createInstanceAndInvokeMethod(service, method);
+//                new DynamicBean().createBeanAndInvokeMethod(service, method);
 
 //                log.info("call == service : {}, method : {}", service, method);
 

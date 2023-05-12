@@ -1,8 +1,6 @@
-package test;
+package action;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.InvocationTargetException;
@@ -60,7 +58,7 @@ public class DynamicBean {
 
     public static void main(String[] args) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, NoSuchMethodException, InstantiationException {
 //        try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class)) {
-        String className = "test.DynamicBean";
+        String className = "action.DynamicBean";
 //        String className = "test.dynamicBean";
         String methodName = "sayHello";
 //            String fullClassName = context.getAutowireCapableBeanFactory().getBeanClassLoader().loadClass(className).getName();
