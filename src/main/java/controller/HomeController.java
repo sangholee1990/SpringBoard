@@ -4,8 +4,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import acInfo.DynamicBean;
 import org.slf4j.Logger;
@@ -41,9 +44,6 @@ public class HomeController {
 
     protected static final String VIEW_JSON = GlobalVars.View.JSON;
 
-    public static void main(String[] args) {
-
-    }
 
     @RequestMapping(value = "/hello.do")
     public void sayHello(HttpServletRequest request) {
@@ -72,6 +72,8 @@ public class HomeController {
      * Simply selects the home view to render by returning its name.
      */
 //    @RequestMapping(value = "/", method = RequestMethod.GET)
+//    http://localhost:9000/json/test/DynamicBean/sayHello.do
+//    http://localhost:9000/json/acInfo/DynamicBean/sayHello.do
     @RequestMapping(value = "/**/*.do")
     public String home(HttpServletRequest request, HttpServletResponse response, @RequestParam Map<String, Object> params, ModelAndView mav) throws Exception {
 //        log.info("Welcome home! The client locale is {}.", locale);
@@ -83,8 +85,10 @@ public class HomeController {
 //
 //        model.addAttribute("serverTime", formattedDate);
 
+        String service = null;
+        String method = null;
         int idx;
-        String url, service, sMapper, method, sSubMenuCd, sMenuCd;
+        String url, sMapper, sSubMenuCd, sMenuCd;
         Object oService;
         Object oResult;
         Method meMethod;
@@ -102,12 +106,19 @@ public class HomeController {
             System.out.println(String.format("[CHECK] params : %s", params));
 
 
+//            Map<String, Object> params = new HashMap<>();
+            params.put("num1", 5);
+            params.put("num2", 3);
+
+
             System.out.println(String.format("[CHECK] request.getContextPath() : %s", request.getContextPath()));
 
             url = request.getRequestURI().substring(request.getContextPath().length());
             System.out.println(String.format("[CHECK] sUri : %s", url));
-            if (url == null || url.equals("") == true) return "";
 
+            if (url == null || url.length() < 1) return null;
+
+            // 정적 화면
             if (url.indexOf("/html/") == 0) {
 
 
@@ -124,71 +135,35 @@ public class HomeController {
                 return url.substring(6, url.length() - 3);
             }
 
+
+            // 동적 화면
             if (url.indexOf("/json/") == 0) {
+                Pattern pattern = Pattern.compile("^.*/(\\w+)/([^/]+)/([^/]+)\\.do$");
+                Matcher matcher = pattern.matcher(url);
+                if (matcher.matches()) {
+                    String packageName = matcher.group(1);
+                    String className = matcher.group(2);
 
-                url = url.substring(0, url.length() - 3);
+                    service = packageName + "." + className;
+                    method = matcher.group(3);
+                }
 
-                idx = url.lastIndexOf('/');
-                method = url.substring(idx + 1);
-//                service = url.substring(url.lastIndexOf('/', idx - 1) + 1, idx) + "Action";
-                service = "action." + url.substring(url.lastIndexOf('/', idx - 1) + 1, idx);
-                System.out.println(String.format("[CHECK] idx : %s", idx));
-                System.out.println(String.format("[CHECK] method : %s", method));
                 System.out.println(String.format("[CHECK] service : %s", service));
+                System.out.println(String.format("[CHECK] method : %s", method));
+                System.out.println(String.format("[CHECK] params : %s", params));
 
-                new DynamicBean().createInstanceAndInvokeMethod(service, method);
-//                new DynamicBean().createBeanAndInvokeMethod(service, method);
 
-//                log.info("call == service : {}, method : {}", service, method);
+                Map result = new DynamicBean().createInstanceAndInvokeMethod(service, method, params);
+//                Map result = DynamicBean.createInstanceAndInvokeMethod(service, method, params);
+                System.out.println(String.format("[CHECK] result : %s", result));
 
-//                System.out.println(request.getSession().getServletContext().toString());
-//                System.out.println(request.getSession().getServletContext().getContextPath());
+                System.out.println(String.format("[CHECK] VIEW_JSON : %s", VIEW_JSON));
 
-//                webApplicationContext = RequestContextUtils.getWebApplicationContext(request);
-                oService = WebApplicationContextUtils.getRequiredWebApplicationContext(request.getSession().getServletContext()).getBean(service);
-//                oService = WebUtils.getBean(request.getSession().getServletContext(), service);
-//                oService = WebApplicationContextUtils.getRequiredWebApplicationContext(request.getSession().getServletContext()).getBean(service);
-
-//                System.out.println(String.format("[CHECK] request.getSession().getServletContext() : %s", request.getSession().getServletContext()));
-//                System.out.println(String.format("[CHECK] oService : %s", oService));
-                if (oService == null) {
-//                    log.error("[unknownClass][url:" + request.getRequestURI() + ", class:" + sService + "]");
-                    return "";
-                }
-
-                meMethod = oService.getClass().getMethod(method, params.getClass());
-                System.out.println(String.format("[CHECK] meMethod : %s", meMethod));
-
-                if (meMethod == null) {
-                    meMethod = WebUtils.getMethod(oService.getClass(), method);
-                    System.out.println(String.format("[CHECK] meMethod : %s", meMethod));
-                    if (meMethod == null) {
-                        System.out.println("[unknownMethod][url:" + request.getRequestURI() + ", class:" + service + ", method:" + method + "]");
-                        throw new Exception("[not request servicdID] : " + method);
-                    }
-                }
-
-                try {
-                    oResult = meMethod.invoke(oService, params);
-                    System.out.println(String.format("[CHECK] oResult : %s", oResult));
-
-                    if (((Map) oResult).containsKey("error") == true && ((Map) oResult).get("error").equals(true) == true)
-                        TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-                } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-//                    if (e.getCause().getClass().equals(ServiceException.class)) {
-//                        log.error("[serviceException][url:" + request.getRequestURI() + ", class:" + sService + ", method:" + sMethod + "]");
-//                        throw new ServiceException(null, e.getCause().getMessage(), e);
-//                    } else {
-                    System.out.println("[invokeError][url:" + request.getRequestURI() + ", class:" + service + ", method:" + method + "]");
-//                    }
-                    throw e;
-                } catch (Exception e) {
-                    throw e;
-                }
-
-//                addResult(moModel, oResult, sMethod);
+//                    addResult(moModel, result, sMethod);
                 return VIEW_JSON;
             }
+////                addResult(moModel, oResult, sMethod);
+//                return VIEW_JSON;
         } catch (RuntimeException e) {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             log.error("[url:" + request.getRequestURI() + "] ");

@@ -35,13 +35,13 @@ public class DynamicBean {
     }
 
 
-    public static void createInstanceAndInvokeMethod(String className, String methodName) throws InvocationTargetException, IllegalAccessException, ClassNotFoundException, NoSuchMethodException, InstantiationException {
-        Class<?> dynamicClass = Class.forName(className);
-        Object dynamicBeanInstance = dynamicClass.getDeclaredConstructor().newInstance();
-
-        Method method = dynamicClass.getMethod(methodName);
-        method.invoke(dynamicBeanInstance);
-    }
+//    public static void createInstanceAndInvokeMethod(String className, String methodName) throws InvocationTargetException, IllegalAccessException, ClassNotFoundException, NoSuchMethodException, InstantiationException {
+//        Class<?> dynamicClass = Class.forName(className);
+//        Object dynamicBeanInstance = dynamicClass.getDeclaredConstructor().newInstance();
+//
+//        Method method = dynamicClass.getMethod(methodName);
+//        method.invoke(dynamicBeanInstance);
+//    }
 
 //    public static void main(String[] args) throws InvocationTargetException, IllegalAccessException, ClassNotFoundException, NoSuchMethodException, InstantiationException {
 //        String className = "test.DynamicBean";
@@ -67,7 +67,7 @@ public class DynamicBean {
 //            ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 //            String fullClassName = classLoader.loadClass(className).getName();
 
-        createInstanceAndInvokeMethod(className, methodName);
+//        createInstanceAndInvokeMethod(className, methodName);
         createBeanAndInvokeMethod(className, methodName);
 
 //        } catch (Exception e) {

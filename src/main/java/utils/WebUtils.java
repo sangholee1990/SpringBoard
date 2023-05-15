@@ -3,6 +3,7 @@ package utils;
 import com.google.gson.Gson;
 import controller.Action;
 import controller.ActionForward;
+import controller.GlobalVars;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -83,6 +84,24 @@ public class WebUtils {
         }
     }
 
+    public static Map successResult(String messages, Map result) {
+        Map mapData = new HashMap();
+        mapData.put(GlobalVars.Result.SUCCESS, true);
+        mapData.put(GlobalVars.Result.MESSAGES, messages);
+        mapData.put(GlobalVars.Result.DATA, result);
+
+        return mapData;
+    }
+
+    public static Map errorResult(String messages, String result) {
+        Map mapData = new HashMap();
+        mapData.put(GlobalVars.Result.ERROR, true);
+        mapData.put(GlobalVars.Result.MESSAGES, messages);
+        mapData.put(GlobalVars.Result.DATA, result);
+
+        return mapData;
+    }
+
     public static Map<String, Object> extractAttributes(HttpServletRequest request) {
         Map<String, Object> mapData = new HashMap<>();
         Enumeration<String> attributeNames = request.getAttributeNames();
@@ -112,6 +131,7 @@ public class WebUtils {
         return oBean;
 
     }
+
 
     public static Method getMethod(Class oClass, String sMethod) throws Exception {
 
