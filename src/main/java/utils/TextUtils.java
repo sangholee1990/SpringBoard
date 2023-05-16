@@ -9,10 +9,12 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 @Component
 public class TextUtils {
 
+    private final static Logger log = Logger.getGlobal();
     private static Map<String, ActionForward> actionRequestMapping = new Hashtable<String, ActionForward>();
 
     public static void main(String[] args) {

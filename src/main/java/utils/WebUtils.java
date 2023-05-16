@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import controller.Action;
 import controller.ActionForward;
 import controller.GlobalVars;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -14,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -22,8 +25,10 @@ import java.util.Map;
 @Component
 public class WebUtils {
 
-    public static void main(String[] args) {
-    }
+    private static final Logger log = LoggerFactory.getLogger(WebUtils.class);
+
+//    public static void main(String[] args) {
+//    }
 
     private static final Gson gson = new Gson();
 
@@ -122,35 +127,56 @@ public class WebUtils {
         }
     }
 
-    public static Object getBean(ServletContext scContext, String sBeanName) throws Exception {
+    public static Map getBean(String className, String methodName, Map<String, Object> mapData) throws InvocationTargetException, IllegalAccessException, ClassNotFoundException, NoSuchMethodException, InstantiationException {
 
-        Object oBean;
+        Map<String, Object> result = new HashMap<>();
 
-        oBean = WebApplicationContextUtils.getRequiredWebApplicationContext(scContext).getBean(sBeanName);
+        try {
+            Class<?> getClass = Class.forName(className);
+            Object getIns = getClass.getDeclaredConstructor().newInstance();
+            Method method = getClass.getMethod(methodName, Map.class);
+            method.setAccessible(true);
+            result = (Map) method.invoke(getIns, mapData);
 
-        return oBean;
-
-    }
-
-
-    public static Method getMethod(Class oClass, String sMethod) throws Exception {
-
-        int iCount, iNumber;
-        Method meMethod, meMethods[];
-
-        meMethods = oClass.getMethods();
-        iNumber = meMethods.length;
-
-        for (iCount = 0; iCount < iNumber; iCount++) {
-            if (meMethods[iCount].getName().equals(sMethod) == true) {
-                meMethod = meMethods[iCount];
-                meMethod.setAccessible(true);
-                return meMethod;
-            }
+            return WebUtils.successResult("처리 완료했습니다.", result);
+        } catch (RuntimeException e) {
+            log.error("RuntimeException : {}", e.getMessage());
+            return WebUtils.errorResult("오류 발생하였습니다.", e.getMessage());
+        } catch (Exception e) {
+            log.error("Exception : {}", e.getMessage());
+            return WebUtils.errorResult("오류 발생하였습니다.", e.getMessage());
         }
-
-        return null;
-
     }
+
+//    public static Object getBean(ServletContext scContext, String sBeanName) throws Exception {
+//
+//        Object oBean;
+//
+//        oBean = WebApplicationContextUtils.getRequiredWebApplicationContext(scContext).getBean(sBeanName);
+//
+//        return oBean;
+//
+//    }
+
+
+//    public static Method getMethod(Class oClass, String sMethod) throws Exception {
+//
+//        int iCount, iNumber;
+//        Method meMethod, meMethods[];
+//
+//        meMethods = oClass.getMethods();
+//        iNumber = meMethods.length;
+//
+//        for (iCount = 0; iCount < iNumber; iCount++) {
+//            if (meMethods[iCount].getName().equals(sMethod) == true) {
+//                meMethod = meMethods[iCount];
+//                meMethod.setAccessible(true);
+//                return meMethod;
+//            }
+//        }
+//
+//        return null;
+//
+//    }
 
 }

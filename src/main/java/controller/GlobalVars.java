@@ -1,6 +1,6 @@
 package controller;
 
-//public class GlobalVars implements CERS {
+//public class controller.GlobalVars implements CERS {
 public class GlobalVars {
 
     public class Params {

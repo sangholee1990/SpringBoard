@@ -42,13 +42,13 @@ public class DynamicBean {
         aa.put("key", "asdfsadfasdf");
         System.out.println(aa);
 
-        result.put(GlobalVars.Result.DATA, aa);
+        result.put("aa", aa);
         System.out.println(String.format("[CHECK] result : %s", result));
 
         return result;
 
 
-//            result.put(GlobalVars.Result.DATA, mapData);
+//            result.put(controller.GlobalVars.Result.DATA, mapData);
 //            return WebUtils.successResult("처리 완료했습니다.", mapData);
 
 //        } catch (Exception e) {
