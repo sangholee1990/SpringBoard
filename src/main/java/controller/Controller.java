@@ -55,14 +55,12 @@ public class Controller {
                 staticView = packageName + "/" + className + "/" + method;
             }
 
-            log.info("[CHECK] service : {}", service);
-            log.info("[CHECK] view : {}", view);
-            log.info("[CHECK] staticView : {}", staticView);
-
             if (url == null || url.length() < 1) return new ModelAndView();
 
             // 정적
             if (url.indexOf("/html/static") == 0) {
+                log.info("[CHECK] staticView : {}", staticView);
+
                 mav.setViewName(staticView);
 
                 return mav;
@@ -70,6 +68,10 @@ public class Controller {
 
             // 동적 (화면 + 데이터)
             if (url.indexOf("/html/") == 0) {
+                log.info("[CHECK] view : {}", view);
+                log.info("[CHECK] service : {}", service);
+                log.info("[CHECK] method : {}", method);
+
                 Map<String, Object> result = WebUtils.getBean(service, method, params);
                 if (result.containsKey("error") && result.get("error").equals(true)) return new ModelAndView();
 
@@ -84,6 +86,9 @@ public class Controller {
 
             // 동적 (데이터)
             if (url.indexOf("/json/") == 0) {
+                log.info("[CHECK] service : {}", service);
+                log.info("[CHECK] method : {}", method);
+
                 Map<String, Object> result = WebUtils.getBean(service, method, params);
                 if (result.containsKey("error") && result.get("error").equals(true)) return new ModelAndView();
 
@@ -101,7 +106,7 @@ public class Controller {
             log.error("Exception : {}", e.getMessage());
         }
 
-        return new ModelAndView();
-
+//        return new ModelAndView();
+        return null;
     }
 }

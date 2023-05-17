@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Thu Jan 03 12:53:56 KST 2019-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="action.BoardMapper">
+    <select id="list" parameterType="map" resultType="map">
+        SELECT BNO, BTITLE, BNAME, BPWD, BCONT, BHIT, BDATE
+        FROM BOARD
+        ORDER BY BNO DESC
+    </select>
+</mapper>

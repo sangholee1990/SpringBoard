@@ -1,8 +1,6 @@
 package utils;
 
 import com.google.gson.Gson;
-import controller.Action;
-import controller.ActionForward;
 import controller.GlobalVars;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +16,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.sql.SQLException;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -56,11 +55,6 @@ public class WebUtils {
         return requestURI.substring(contextPath.length());
     }
 
-    public static Action createActionInstance(ActionForward actionInfo) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
-        Class<?> className = Class.forName(actionInfo.getClassName());
-        return (Action) className.newInstance();
-    }
-
 
     public static void handleError(HttpServletRequest request, HttpServletResponse response) {
         try {
@@ -72,20 +66,6 @@ public class WebUtils {
             System.out.println(String.format("[ERROR] IOException : %s", ioe.getMessage()));
         } catch (Exception e) {
             System.out.println(String.format("[ERROR] Exception : %s", e.getMessage()));
-        }
-    }
-
-    public static void handleResponse(HttpServletRequest request, HttpServletResponse response, ActionForward actionInfo) throws ServletException, IOException {
-        // 비동기 통신에서 화면 전환없이 데이터 접근/전달
-        if (actionInfo.isJson()) {
-            WebUtils.writeResponse(request, response);
-        } else if (actionInfo.isRedirect()) {
-            // 동기 통신에서 데이터 접근/전달없이 화면 전환
-            response.sendRedirect(actionInfo.getPath());
-        } else {
-            // 동기 통신에서 데이터 접근/전달 및 화면 전환
-            RequestDispatcher dispatcher = request.getRequestDispatcher(actionInfo.getPath());
-            dispatcher.forward(request, response);
         }
     }
 
@@ -139,6 +119,7 @@ public class WebUtils {
             result = (Map) method.invoke(getIns, mapData);
 
             return WebUtils.successResult("처리 완료했습니다.", result);
+
         } catch (RuntimeException e) {
             log.error("RuntimeException : {}", e.getMessage());
             return WebUtils.errorResult("오류 발생하였습니다.", e.getMessage());

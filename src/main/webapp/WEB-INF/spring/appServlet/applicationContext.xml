@@ -3,17 +3,17 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
-        <property name="jdbcUrl" value="jdbc:mysql://211.227.85.209:3306/DMS04?useSSL=false&amp;useUnicode=yes&amp;characterEncoding=UTF-8&amp;serverTimezone=UTC" />
-        <property name="username" value="dms02user01" />
-        <property name="password" value="devel!" />
-        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
-        <property name="maximumPoolSize" value="10" />
-        <property name="minimumIdle" value="2" />
-        <property name="connectionTimeout" value="30000" />
-        <property name="idleTimeout" value="600000" />
-        <property name="maxLifetime" value="1800000" />
-    </bean>
+<!--    <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">-->
+<!--        <property name="jdbcUrl" value="jdbc:mysql://211.227.85.209:3306/DMS04?useSSL=false&amp;useUnicode=yes&amp;characterEncoding=UTF-8&amp;serverTimezone=UTC" />-->
+<!--        <property name="username" value="dms02user01" />-->
+<!--        <property name="password" value="devel!" />-->
+<!--        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />-->
+<!--        <property name="maximumPoolSize" value="10" />-->
+<!--        <property name="minimumIdle" value="2" />-->
+<!--        <property name="connectionTimeout" value="30000" />-->
+<!--        <property name="idleTimeout" value="600000" />-->
+<!--        <property name="maxLifetime" value="1800000" />-->
+<!--    </bean>-->
 
 <!--    <bean id="actionConfig" class="controller.ActionConfig">-->
 <!--         <property name="message" value="Hello World!"/>-->

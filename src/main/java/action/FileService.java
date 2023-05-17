@@ -3,6 +3,7 @@ package action;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.springframework.stereotype.Component;
 import utils.WebUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,6 +29,7 @@ import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+@Component
 public class FileService {
 
     private static final long serialVersionUID = 1L;
