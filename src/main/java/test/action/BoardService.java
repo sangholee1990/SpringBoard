@@ -1,4 +1,4 @@
-package service;
+package test.action;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;

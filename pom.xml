@@ -349,13 +349,6 @@
             <version>1.12.1</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>RELEASE</version>
-            <scope>compile</scope>
-        </dependency>
-
         <!-- Needed for XML View (with JAXB2) -->
         <dependency>
             <groupId>org.springframework</groupId>

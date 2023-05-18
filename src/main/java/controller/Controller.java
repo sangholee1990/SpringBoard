@@ -78,7 +78,6 @@ public class Controller {
                 log.info("[CHECK] result : {}", result);
 
                 mav.addObject(GlobalVars.Result.DATA, result);
-                mav.addObject("serverTime", "asdfsadfasdfasdf");
                 mav.setViewName(view);
 
                 return mav;
@@ -89,10 +88,8 @@ public class Controller {
                 log.info("[CHECK] service : {}", service);
                 log.info("[CHECK] method : {}", method);
 
-                Map<String, Object> result = WebUtils.getBean(service, method, params);
-                if (result.containsKey("error") && result.get("error").equals(true)) return new ModelAndView();
-
-                log.info("[CHECK] result : {}", result);
+                 Map<String, Object> result = WebUtils.getBean(service, method, params);
+                 log.info("[CHECK] result : {}", result);
 
                 mav.addObject(GlobalVars.Result.DATA, result);
                 mav.setViewName(GlobalVars.View.JSON);
