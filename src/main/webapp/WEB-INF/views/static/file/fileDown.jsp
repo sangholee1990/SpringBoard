@@ -22,31 +22,32 @@
                 // Java 서버에서 파일 목록 json
                 // url: '/json/fileList.do',
                 url: 'http://211.227.85.209:8000/file_list',
+                method: 'GET',
                 rownumbers: true,
                 pagination: true, // 페이징 기능을 사용함
                 pageSize: 1000, // 한 페이지에 보여줄 행 수
                 pageList: [1000], // 페이지 당 행 수 선택 옵션
                 columns: [[
-                    {field: 'name', title: '파일명', width: "60%", align: 'left'},
+                    {field: 'name', title: '파일명', width: "70%", align: 'left'},
                     {field: 'size', title: '파일크기', width: "10%", align: 'center'},
                     {
-                        field: 'WEB ajax', title: 'WEB ajax', width: "10%", align: 'center',
+                        field: 'WEB ajax', title: 'API ajax', width: "10%", align: 'center',
                         formatter: function (value, row, index) {
                             return '<button class="btn-download" onclick="downFile(\'' + row.name + '\')">다운</button>';
                         }
                     },
                     {
-                        field: 'WEB a링크', title: 'WEB a링크', width: "10%", align: 'center',
+                        field: 'WEB a링크', title: 'API a링크', width: "10%", align: 'center',
                         formatter: function (value, row, index) {
                             return '<a class="btn-download" download="' + row.name + '" href="/upload/' + encodeURIComponent(row.name) + '">다운</a>';
                         }
-                    },
-                    {
-                        field: 'WAS base64', title: 'WAS base64', width: "10%", align: 'center',
-                        formatter: function (value, row, index) {
-                            return '<button class="btn-download" onclick="downBase64(\'' + row.name + '\')">다운</button>';
-                        }
                     }
+                    // {
+                    //     field: 'WAS base64', title: 'WAS base64', width: "10%", align: 'center',
+                    //     formatter: function (value, row, index) {
+                    //         return '<button class="btn-download" onclick="downBase64(\'' + row.name + '\')">다운</button>';
+                    //     }
+                    // }
                 ]]
             });
 
@@ -80,7 +81,7 @@
         // 파일을 다운로드하는 함수를 추가합니다.
         function downFile(fileName) {
             $.ajax({
-                url: '/upload/' + encodeURIComponent(fileName), // 서버에서 파일 다운로드 링크를 제공하는 API 엔드포인트
+                url: 'http://211.227.85.209:8000/UPLOAD/' + encodeURIComponent(fileName), // 서버에서 파일 다운로드 링크를 제공하는 API 엔드포인트
                 type: 'GET',
                 xhrFields: {
                     responseType: 'blob' // 서버가 binary 데이터를 응답할 경우, responseType을 blob으로 설정하여 다운로드 가능한 형태로 변환
@@ -98,27 +99,27 @@
             });
         }
 
-        function downBase64(fileName) {
-            $.ajax({
-                url: '/json/fileDown.do',
-                type: 'GET',
-                contentType: 'application/json',
-                data: {
-                    "fileName": fileName
-                },
-                success: function (response) {
-                    var base64Data = response.fileCont;
-                    var downloadLink = document.createElement('a');
-                    downloadLink.href = 'data:application/octet-stream;base64,' + base64Data;
-                    downloadLink.download = response.fileName;
-                    downloadLink.click();
-                },
-                error: function (xhr, status, error) {
-                    // 에러 처리
-                    console.error(error);
-                }
-            });
-        }
+        // function downBase64(fileName) {
+        //     $.ajax({
+        //         url: '/json/fileDown.do',
+        //         type: 'GET',
+        //         contentType: 'application/json',
+        //         data: {
+        //             "fileName": fileName
+        //         },
+        //         success: function (response) {
+        //             var base64Data = response.fileCont;
+        //             var downloadLink = document.createElement('a');
+        //             downloadLink.href = 'data:application/octet-stream;base64,' + base64Data;
+        //             downloadLink.download = response.fileName;
+        //             downloadLink.click();
+        //         },
+        //         error: function (xhr, status, error) {
+        //             // 에러 처리
+        //             console.error(error);
+        //         }
+        //     });
+        // }
 
     </script>
 </head>

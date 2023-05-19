@@ -13,8 +13,8 @@
         <ul class="list-group list-group-flush">
             <li class="list-group-item"><a href="/json/service/DynamicBean/sayHello.do">json</a></li>
             <li class="list-group-item"><a href="/html/service/DynamicBean/sayHello.do">json + html</a></li>
-            <li class="list-group-item"><a href=/html/static/home/home.do">html</a></li>
-            <li class="list-group-item"><a href=/json/service/FileService/FileList.do">json 파일목록</a></li>
+            <li class="list-group-item"><a href="/html/static/home/home.do">html</a></li>
+            <li class="list-group-item"><a href="/json/service/FileService/FileList.do">json 파일목록</a></li>
 
             <li class="list-group-item"><a href="/html/service/DynamicBean/sayHello3.do">json+html 에러</a></li>
             <li class="list-group-item"><a href="/json/service/DynamicBean/sayHello2.do">json 에러 </a></li>

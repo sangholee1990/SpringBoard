@@ -78,6 +78,7 @@ public class Controller {
                 log.info("[CHECK] result : {}", result);
 
                 mav.addObject(GlobalVars.Result.DATA, result);
+
                 mav.setViewName(view);
 
                 return mav;

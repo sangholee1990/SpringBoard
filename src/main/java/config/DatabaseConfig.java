@@ -50,7 +50,7 @@ public class DatabaseConfig implements TransactionManagementConfigurer {
         dataSource.setDefaultAutoCommit(false);
         dataSource.setInitialSize(2);
         dataSource.setMaxTotal(10);
-        System.out.println(dataSource);
+//        System.out.println(dataSource);
         return dataSource;
     }
 
@@ -73,7 +73,7 @@ public class DatabaseConfig implements TransactionManagementConfigurer {
 //        sessionFactory.setMapperLocations(applicationContext.getResources("classpath:/mapper/**/*Mapper.xml"));
         sessionFactory.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:mapper/*.xml"));
 
-        System.out.println(sessionFactory);
+//        System.out.println(sessionFactory);
         return sessionFactory.getObject();
     }
 }
