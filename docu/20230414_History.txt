@@ -21,6 +21,93 @@
         + 자바 (java -jar *)
         + 기타 등등
 
+# 수동
+/etc/passwd 동일 계정 확인
+useradd -m -p 비밀번호 아이디
+
+
+# 자동
+RunShell-UserAdd.sh
+
+
+# 쉘 스크립트 실행방법
+    직접 실행
+    chmod -755 RunShell-UserAdd.sh
+    ./RunShell-UserAdd.sh
+
+    쉘 명령어로 실행
+    bash RunShell-UserAdd.sh
+    /bin/bash RunShell-UserAdd.sh
+
+    소스 명령어로 실행
+    source RunShell-UserAdd.sh
+
+
+# 쉘 스크립트 상태코드
+    성공적인 실행을 나타내는 0과, 오류나 예외 상황을 나타내는 0이 아닌 값을 사용합니다.
+    0: 성공적인 실행을 나타냅니다.
+    1-125: 오류나 예외 상황을 나타내는 값입니다. 다양한 오류나 예외 상황에 따라 다른 값을 사용할 수 있습니다.
+    126: 실행 가능한 파일이지만, 쉘이 실행할 수 없는 상황을 나타냅니다.
+    127: 명령어나 실행 파일을 찾을 수 없는 상황을 나타냅니다.
+    128+n: 신호 n에 의해 프로세스가 종료되었음을 나타냅니다.
+    130: Ctrl+C에 의해 프로세스가 종료되었음을 나타냅니다.
+    255: 오류 코드를 사용할 수 없는 상황을 나타냅니다.
+    스크립트가 종료될 때, 스크립트는 상태 코드를 리턴합니다.
+
+    echo $?
+
+
+#!/bin/bash
+
+# 사용자 계정 배열 선언
+usernames=("indi01user01" "indi01user02" "indi01user03" "indi01user04")
+
+for username in "${usernames[@]}"
+do
+    # 비밀번호 생성: 사용자 이름의 첫 4글자 + "!@#"
+    password="${username:0:4}!@#"
+
+    # 사용자 계정 생성
+    egrep "^$username" /etc/passwd >/dev/null
+    if [ $? -eq 0 ]; then
+        echo "[ERROR] $username exists!"
+        continue
+    fi
+
+    pass=$(perl -e 'print crypt($ARGV[0], "password")' $password)
+    useradd -m -p $pass $username
+
+    if [ $? -ne 0 ]; then
+        echo "[ERROR] Failed to add a User $username"
+    fi
+
+    echo "[CHECK] User $username has been added to system!"
+done
+
+
+
+bash RunShell-ArgsProc.sh "args" "args2" "args3"
+
+#!/bin/bash
+
+# 빈 파일 생성
+touch output.txt
+
+# 모든 입력 파라미터를 통해 반복문 수행
+for args in "$@"
+do
+    echo $args >> output.txt
+    echo "[CHECK] args : $args"
+done
+
+if [ $? -ne 0 ]; then
+    echo "[ERROR] fail"
+fi
+
+echo "[CHECK] succ"
+
+
+
     5. 자바스크립트 기반 제이쿼리-타입스크립트-리액트-유용한 라이브러리 학습 및 다양한 디버깅 모드 (3주)
         Frontend Monorepo
         + 제이쿼리
